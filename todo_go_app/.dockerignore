@@ -1,0 +1,27 @@
+# Go build artifacts
+bin/
+*.exe
+*.test
+*.out
+
+# Dependency cache
+/pkg/
+*.mod
+
+# Local database (we’ll mount it as a volume instead)
+todo.sqlite
+data/
+
+# Editor & OS junk
+.vscode/
+.idea/
+.DS_Store
+
+# Git
+.git
+.gitignore
+
+# Docker files (optional)
+Dockerfile
+docker-compose.yml
+.dockerignore
