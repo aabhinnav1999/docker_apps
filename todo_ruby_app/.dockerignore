@@ -1,0 +1,24 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Local database
+todo.sqlite
+
+# Logs/temp
+log/
+tmp/
+*.log
+
+# Editor files
+.vscode/
+.idea/
+.DS_Store
+
+# Ruby cache
+.bundle/
+vendor/bundle
