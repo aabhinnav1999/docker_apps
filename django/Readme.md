@@ -20,7 +20,7 @@ docker-compose up --build
 Once the containers are healthy, run the initial migrations to set up your database.
 > **Note:** This is only required for the first-time setup.
 
-\```bash
+```bash
 docker-compose exec web python manage.py migrate
 ```
 
