@@ -1,8 +1,11 @@
 # Python Based Daily Planner Application
 
+Build using Django web framework, where users can add and manage their daily tasks in the dashboard
+
 ## 🛠 Tech Stack
 * **Python** (Django)
 * **Docker** & **Docker Compose**
+* **Nginx**
 
 ---
 
