@@ -6,7 +6,6 @@ bin/
 
 # Dependency cache
 /pkg/
-*.mod
 
 # Local database (we’ll mount it as a volume instead)
 todo.sqlite

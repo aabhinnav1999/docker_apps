@@ -66,7 +66,7 @@ func main() {
 	mux.HandleFunc("/delete", app.handleDelete)
 	mux.HandleFunc("/clear-completed", app.handleClearCompleted)
 
-	addr := "127.0.0.1:8080"
+	addr := "0.0.0.0:8080"
 	log.Println("✅ Go To-Do running at http://" + addr)
 	log.Fatal(http.ListenAndServe(addr, logRequest(mux)))
 }
