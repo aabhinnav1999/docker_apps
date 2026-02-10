@@ -13,12 +13,9 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// ---------- Embedded templates/static ----------
 
-//go:embed templates/*.html
 var templatesFS embed.FS
 
-//go:embed static/*
 var staticFS embed.FS
 
 type App struct {
@@ -67,7 +64,7 @@ func main() {
 	mux.HandleFunc("/clear-completed", app.handleClearCompleted)
 
 	addr := "0.0.0.0:8080"
-	log.Println("✅ Go To-Do running at http://" + addr)
+	log.Println("Go To-Do running at http://" + addr)
 	log.Fatal(http.ListenAndServe(addr, logRequest(mux)))
 }
 
@@ -83,7 +80,6 @@ CREATE TABLE IF NOT EXISTS todos (
 	return err
 }
 
-// ---------- Handlers ----------
 
 func (a *App) handleIndex(w http.ResponseWriter, r *http.Request) {
 	filter := r.URL.Query().Get("filter")
@@ -192,7 +188,6 @@ func (a *App) handleClearCompleted(w http.ResponseWriter, r *http.Request) {
 	redirectKeepFilter(w, r)
 }
 
-// ---------- DB ops ----------
 
 func (a *App) listTodos(filter string) ([]Todo, error) {
 	query := `SELECT id, text, completed, created_at FROM todos`
@@ -259,7 +254,6 @@ func (a *App) clearCompleted() error {
 	return err
 }
 
-// ---------- Helpers ----------
 
 func redirectKeepFilter(w http.ResponseWriter, r *http.Request) {
 	filter := r.URL.Query().Get("filter")
