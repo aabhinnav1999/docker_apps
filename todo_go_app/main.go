@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"embed"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 	"strconv"
@@ -13,9 +14,10 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-
+//go:embed templates/*
 var templatesFS embed.FS
 
+//go:embed static/*
 var staticFS embed.FS
 
 type App struct {
@@ -53,8 +55,12 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	// Static files
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
+	// Serve embedded static files
+	staticSub, err := fs.Sub(staticFS, "static")
+	if err != nil {
+		log.Fatal(err)
+	}
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticSub))))
 
 	// Routes
 	mux.HandleFunc("/", app.handleIndex)
@@ -79,7 +85,6 @@ CREATE TABLE IF NOT EXISTS todos (
 `)
 	return err
 }
-
 
 func (a *App) handleIndex(w http.ResponseWriter, r *http.Request) {
 	filter := r.URL.Query().Get("filter")
@@ -188,7 +193,6 @@ func (a *App) handleClearCompleted(w http.ResponseWriter, r *http.Request) {
 	redirectKeepFilter(w, r)
 }
 
-
 func (a *App) listTodos(filter string) ([]Todo, error) {
 	query := `SELECT id, text, completed, created_at FROM todos`
 	switch filter {
@@ -253,7 +257,6 @@ func (a *App) clearCompleted() error {
 	_, err := a.db.Exec(`DELETE FROM todos WHERE completed = 1`)
 	return err
 }
-
 
 func redirectKeepFilter(w http.ResponseWriter, r *http.Request) {
 	filter := r.URL.Query().Get("filter")

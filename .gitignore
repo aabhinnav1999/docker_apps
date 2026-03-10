@@ -37,3 +37,9 @@ __pycache__/
 
 .github/
 .deployment
+
+# ruby files
+vendor/
+.bundle/
+log/
+tmp/
