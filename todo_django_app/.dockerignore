@@ -14,7 +14,6 @@ Dockerfile
 docker-compose.yml
 
 *.log
-*.sqlite3
 
 # If you keep local env files
 .env
