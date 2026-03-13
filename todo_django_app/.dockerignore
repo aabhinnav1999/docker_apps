@@ -2,19 +2,29 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.Python
 
-.venv/
-venv/
 env/
+venv/
+.venv/
 
 .git/
 .gitignore
+.idea/
+.vscode/
+*.log
 
 Dockerfile
 docker-compose.yml
+.dockerignore
 
-*.log
+staticfiles/
+media/
+tests/
+.pytest_cache/
+.mypy_cache/
+coverage/
+htmlcov/
 
-# If you keep local env files
-.env
-.env.*
+db.sqlite3
+*.sqlite
