@@ -1,0 +1,64 @@
+pipeline {
+    agent { label 'my_server'}
+
+    environment {
+        DOCKER_IMAGE = "todo_django:${env.BUILD_NUMBER}"
+        DOCKER_USERNAME = "aabhinnavdocker"
+    }
+
+    stages {
+        stage('1.Checkout Code') {
+            steps {
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/aabhinnav1999/cloud_apps.git']])
+            }
+        }
+
+        stage('2.Build Docker Image') {
+            steps {
+                script {
+                    sh ''' cd todo_django_app
+                    docker build -t ${DOCKER_IMAGE} .
+                    '''
+                }
+            }
+        }
+
+        stage('3.Login to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh 'echo \"$DOCKER_PASSWORD\" | docker login -u \"$DOCKER_USERNAME\" --password-stdin'
+                    }
+                }
+            }
+        }
+
+        stage('4. Docker Scout Scan') {
+            steps {
+                script {
+                    sh "docker scout cves ${DOCKER_IMAGE}"
+                }
+            }
+        }
+
+        stage('5. Tag Image') {
+            steps {
+                script {
+                    sh "docker image tag ${DOCKER_IMAGE} ${DOCKER_USERNAME}/${DOCKER_IMAGE}"
+                }
+
+                script {
+                    sh "docker image push ${DOCKER_USERNAME}/${DOCKER_IMAGE}"
+                }
+            }
+        }
+
+        stage('6. Push Docker Image') {
+            steps {
+                script {
+                    sh "docker image push ${DOCKER_USERNAME}/${DOCKER_IMAGE}"
+                }
+            }
+        }
+    }
+}
