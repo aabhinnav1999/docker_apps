@@ -24,3 +24,5 @@ EXPOSE 80
 
 # Start both services
 CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+
+

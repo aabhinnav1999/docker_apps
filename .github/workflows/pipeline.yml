@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/docker_build.yml
     with:
       app_name: todo_django_app
-      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-django-app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo_django_app
       context: ./todo_django_app
       dockerfile: ./todo_django_app/Dockerfile
     secrets:
@@ -54,7 +54,7 @@ jobs:
     uses: ./.github/workflows/docker_build.yml
     with:
       app_name: todo_go_app
-      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-go-app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo_go_app
       context: ./todo_go_app
       dockerfile: ./todo_go_app/Dockerfile
     secrets:
@@ -67,7 +67,7 @@ jobs:
     uses: ./.github/workflows/docker_build.yml
     with:
       app_name: todo_node_app
-      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-node-app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo_node_app
       context: ./todo_node_app
       dockerfile: ./todo_node_app/Dockerfile
     secrets:
@@ -80,7 +80,7 @@ jobs:
     uses: ./.github/workflows/docker_build.yml
     with:
       app_name: todo_php_app
-      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-php-app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo_php_app
       context: ./todo_php_app
       dockerfile: ./todo_php_app/Dockerfile
     secrets:
@@ -93,7 +93,7 @@ jobs:
     uses: ./.github/workflows/docker_build.yml
     with:
       app_name: todo_ruby_app
-      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-ruby-app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo_ruby_app
       context: ./todo_ruby_app
       dockerfile: ./todo_ruby_app/Dockerfile
     secrets:

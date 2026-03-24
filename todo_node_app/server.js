@@ -26,7 +26,6 @@ function writeTodos(todos) {
 }
 
 function newId() {
-  // simple unique id without extra libs
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
