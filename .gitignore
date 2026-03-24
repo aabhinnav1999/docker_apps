@@ -35,7 +35,7 @@ env/
 *.pyc
 __pycache__/
 
-.github/
+master_todonode.yml
 .deployment
 
 # ruby files

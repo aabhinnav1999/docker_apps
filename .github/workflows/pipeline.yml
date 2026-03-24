@@ -2,16 +2,100 @@ name: Reusable Pipeline
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
-  build:
-
+  detect-changes:
     runs-on: ubuntu-latest
-   
-
+    outputs:
+      django: ${{ steps.filter.outputs.django }}
+      go: ${{ steps.filter.outputs.go }}
+      node: ${{ steps.filter.outputs.node }}
+      php: ${{ steps.filter.outputs.php }}
+      ruby: ${{ steps.filter.outputs.ruby }}
     steps:
-    - uses: actions/checkout@v4
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Detect changed folders
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            django:
+              - 'todo_django_app/**'
+            go:
+              - 'todo_go_app/**'
+            node:
+              - 'todo_node_app/**'
+            php:
+              - 'todo_php_app/**'
+            ruby:
+              - 'todo_ruby_app/**'
+
+  build-django:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.django == 'true'
+    uses: ./.github/workflows/docker_build.yml
+    with:
+      app_name: todo_django_app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-django-app
+      context: ./todo_django_app
+      dockerfile: ./todo_django_app/Dockerfile
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-go:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.go == 'true'
+    uses: ./.github/workflows/docker_build.yml
+    with:
+      app_name: todo_go_app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-go-app
+      context: ./todo_go_app
+      dockerfile: ./todo_go_app/Dockerfile
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-node:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.node == 'true'
+    uses: ./.github/workflows/docker_build.yml
+    with:
+      app_name: todo_node_app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-node-app
+      context: ./todo_node_app
+      dockerfile: ./todo_node_app/Dockerfile
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-php:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.php == 'true'
+    uses: ./.github/workflows/docker_build.yml
+    with:
+      app_name: todo_php_app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-php-app
+      context: ./todo_php_app
+      dockerfile: ./todo_php_app/Dockerfile
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-ruby:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.ruby == 'true'
+    uses: ./.github/workflows/docker_build.yml
+    with:
+      app_name: todo_ruby_app
+      image_name: ${{ vars.DOCKERHUB_USERNAME }}/todo-ruby-app
+      context: ./todo_ruby_app
+      dockerfile: ./todo_ruby_app/Dockerfile
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
